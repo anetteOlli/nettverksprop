@@ -12,7 +12,7 @@ func AllPrimeNum (num1 int, num2 int) [] int {
 	//Iterates through all the numbers between the two limits
 	for i := num1; i <= num2; i++ {
 		//If current number is a prime
-		if IsPrime.IsPrime(i) {
+		if i >= 2 && IsPrime.IsPrime(i) {
 			//The prime number is added in the end of the slice (Go creates a new array behind the slice in the background with the new element in)
 			primes = append(primes, i)
 		}

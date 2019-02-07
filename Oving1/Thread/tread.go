@@ -12,17 +12,17 @@ var primes [] int
 var mutex sync.Mutex
 
 func RunFindPrimesUpTo(start int, end int) {
-	var primeTemp [] int = AllPrimeNum.AllPrimeNum(start,end)
+	var primeTemp = AllPrimeNum.AllPrimeNum(start,end)
 	mutex.Lock()
  	primes = append(primes, primeTemp...)
  	mutex.Unlock()
 	wg.Done()
 }
 
-func CreateThreads(min int, max int){
+func CreateThreads(min int, max int) int {
 	var sliceSize = 1000
-	var nSlices int = (int) (max - min)/sliceSize
-	fmt.Println(nSlices)
+	var nSlices = (int) (max - min)/sliceSize
+	fmt.Println("Number of threads: ", nSlices)
 
 	wg.Add(nSlices)
 	var startTimer = time.Now()
@@ -39,22 +39,23 @@ func CreateThreads(min int, max int){
 			}
 		}
 	wg.Wait()
-	fmt.Println("elapsedtime: ", time.Since(startTimer))
-
+	fmt.Println("Elapsedtime: ", time.Since(startTimer))
+	return len(primes)
 }
 
 func main()  {
 
+	min := 0
+	max := 1000000
 
-	//wg.Add(3)
-	//	go RunFindPrimesUpTo(1,1000)
-	//	go RunFindPrimesUpTo(1001,2000)
-	//	go RunFindPrimesUpTo(2001,3000)
-	//wg.Wait()
-
-	CreateThreads(0, 10000000)
+	numOfPrimes :=CreateThreads(min, max)
 
 	sort.Ints(primes)
 
-	fmt.Println("The prime numbers between ", 1, " and ", 1000, " is: ", ", len(primes): ", len(primes))
+	//Printing the answer
+	fmt.Println("Min and max chosen:  ", min, " and ", max)
+	if numOfPrimes <= 3000 {
+		fmt.Println("The primenumbers is: ", primes)
+	}
+	fmt.Println("Number of primes: ", numOfPrimes)
 }
