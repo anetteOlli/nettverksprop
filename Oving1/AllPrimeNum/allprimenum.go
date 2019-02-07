@@ -1,8 +1,8 @@
-package main
+package AllPrimeNum
 
 import (
 	"fmt"
-	"Nettverksprog/Oving1/IsPrime"
+	"nettverksprog/Oving1/IsPrime"
 )
 
 func AllPrimeNum (num1 int, num2 int) [] int {
