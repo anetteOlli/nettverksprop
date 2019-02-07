@@ -20,8 +20,14 @@ func RunFindPrimesUpTo(start int, end int) {
 }
 
 func CreateThreads(min int, max int, numThreads int) int {
-	var sliceSize = (max - min)/numThreads
-	var nSlices = numThreads
+	var nSlices =max - min
+	var sliceSize = 1
+
+	if (max - min)/numThreads != 0{
+		sliceSize = (max - min)/numThreads
+		nSlices = numThreads
+	}
+
 	fmt.Println("Numbers pr threads: ", sliceSize)
 
 	//Set primes as an empty slice because of the unit test of the method
