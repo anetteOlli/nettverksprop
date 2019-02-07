@@ -19,10 +19,13 @@ func RunFindPrimesUpTo(start int, end int) {
 	wg.Done()
 }
 
-func CreateThreads(min int, max int) int {
-	var sliceSize = 1000
-	var nSlices = (int) (max - min)/sliceSize
-	fmt.Println("Number of threads: ", nSlices)
+func CreateThreads(min int, max int, numThreads int) int {
+	var sliceSize = (max - min)/numThreads
+	var nSlices = numThreads
+	fmt.Println("Numbers pr threads: ", sliceSize)
+
+	//Set primes as an empty slice because of the unit test of the method
+	primes = nil
 
 	wg.Add(nSlices)
 	var startTimer = time.Now()
@@ -44,11 +47,11 @@ func CreateThreads(min int, max int) int {
 }
 
 func main()  {
-
 	min := 0
 	max := 1000000
+	numThreads := 5
 
-	numOfPrimes :=CreateThreads(min, max)
+	numOfPrimes := CreateThreads(min, max, numThreads)
 
 	sort.Ints(primes)
 
