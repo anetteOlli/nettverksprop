@@ -6,6 +6,7 @@ import (
 	"sync"
 	"sort"
 	"time"
+	"math"
 )
 var wg sync.WaitGroup
 var primes [] int
@@ -19,43 +20,75 @@ func RunFindPrimesUpTo(start int, end int) {
 	wg.Done()
 }
 
-func CreateThreads(min int, max int, numThreads int) int {
-	var nSlices =max - min
-	var sliceSize = 1
+//simplified abc-formula for calculating end of slice
+func calculateEnd(startByCost int, partCost int) int{
+	var c = float64( 1 + 4*(startByCost-1)*(startByCost) + 8* partCost)
+	return int((-1 + math.Sqrt(c))/2)
+}
 
-	if (max - min)/numThreads != 0{
-		sliceSize = (max - min)/numThreads
-		nSlices = numThreads
+func CreateThreads(min int, max int, numThreads int) int {
+	primes = nil
+	//var nSlices =max - min
+	//var sliceSize = 1
+
+	//removes negative numbers
+	if min < 0{
+		min = 0
+	}
+	//quick check if there's no primes...
+	if max <= 1{
+		return 0
 	}
 
-	fmt.Println("Numbers pr threads: ", sliceSize)
+	//user can set threading higher than the number of numbers needed to be checked
+	var threading = max - min
+	if numThreads < threading{
+		threading = numThreads
+	}
 
-	//Set primes as an empty slice because of the unit test of the method
-	primes = nil
+	//calculates totalCost as a the sum of the harmonic-sequence
+	//known issue with this method when the number of threads is equal to the numbers checked, the last couple of
+	//ends gets negative. This is fixed during the last loop
+	var totalCost = (int) (max *(max +1))/2 - ((min-1)*min)/2
+	var partCost = totalCost/threading
 
-	wg.Add(nSlices)
-	var startTimer = time.Now()
-	var start = min
-	var slutt = start + sliceSize -1
-		for i:= 0; i < nSlices; i++  {
-			go RunFindPrimesUpTo(start,slutt)
-			start += sliceSize
-			//second last loop adds one to get the end of the slice in order that the last number is checked if prime
-			if i - 1 == nSlices{
-				slutt +=sliceSize +1
+	var points [] int = nil
+
+	fmt.Println("number of threads:" , threading)
+
+	wg.Add(threading)
+		var startTimer = time.Now()
+		var startByCost = min
+		var endByCost = calculateEnd(startByCost, partCost)
+
+		for i:=0; i < threading; i++{
+			fmt.Println("startpoint thread ", i, ":", startByCost, ", endpoint: ", endByCost, "i -1 == threading", i ==threading -2 )
+			points = append(points, startByCost, endByCost )
+
+
+			go RunFindPrimesUpTo(startByCost, endByCost)
+
+			startByCost = endByCost +1
+
+
+			if i  == threading - 2{
+				endByCost = max
 			}else{
-				slutt += sliceSize
+				endByCost = calculateEnd(startByCost, partCost)
 			}
 		}
+
 	wg.Wait()
 	fmt.Println("Elapsedtime: ", time.Since(startTimer))
+	fmt.Println("end & startpoints: ", points)
 	return len(primes)
+
 }
 
 func main()  {
 	min := 0
 	max := 1000000
-	numThreads := 5
+	numThreads := 6
 
 	numOfPrimes := CreateThreads(min, max, numThreads)
 
