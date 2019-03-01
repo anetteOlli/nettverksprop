@@ -3,14 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
-	"io/ioutil"
 	"net/http"
 
 )
 
-type msg struct {
-	String string
-}
 
 func main() {
 	http.HandleFunc("/ws", wsHandler)
@@ -20,11 +16,25 @@ func main() {
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	content, err := ioutil.ReadFile("Oving3/index.html")
-	if err != nil {
-		fmt.Println("Could not open file.", err)
+
+	/**
+	w setter automatisk status til 200 med mindre man spesifiserer på egenhånd
+	w benytter text/html som default
+	*/
+
+	fmt.Fprintf(w, "%s", "<html><body><h1>Hilsen. Du har koblet deg opp til min enkle web-tjener</h1><ul>")
+
+
+	for name, headers :=range r.Header {
+		var data = ""
+		for _, h := range headers{
+			data +=h
+		}
+		fmt.Fprintf(w, "%s", "<li>" + name +" = " + data + "</li>")
+
 	}
-	fmt.Fprintf(w, "%s", content)
+	fmt.Fprintf(w, "%s", "</ul></body></html>")
+
 }
 
 func wsHandler(w http.ResponseWriter, r *http.Request) {
@@ -37,23 +47,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Could not open websocket connection", http.StatusBadRequest)
 	}
-
-	go echo(conn, r)
+	print(conn)
 }
 
-func echo(conn *websocket.Conn, r *http.Request) {
-	for {
-		m := msg{r.Header.Get("Accept-Charset")}
-
-		err := conn.ReadJSON(&m)
-		if err != nil {
-			fmt.Println("Error reading json.", err)
-		}
-
-		fmt.Printf("Got message: %#v\n", m)
-
-		if err = conn.WriteJSON(m); err != nil {
-			fmt.Println(err)
-		}
-	}
-}
