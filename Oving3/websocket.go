@@ -9,7 +9,7 @@ import (
 )
 
 type msg struct {
-	Num int
+	String string
 }
 
 func main() {
@@ -32,17 +32,18 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Origin not allowed", 403)
 		return
 	}
+
 	conn, err := websocket.Upgrade(w, r, w.Header(), 1024, 1024)
 	if err != nil {
 		http.Error(w, "Could not open websocket connection", http.StatusBadRequest)
 	}
 
-	go echo(conn)
+	go echo(conn, r)
 }
 
-func echo(conn *websocket.Conn) {
+func echo(conn *websocket.Conn, r *http.Request) {
 	for {
-		m := msg{}
+		m := msg{r.Header.Get("Accept-Charset")}
 
 		err := conn.ReadJSON(&m)
 		if err != nil {
