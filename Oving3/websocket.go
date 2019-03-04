@@ -1,52 +1,41 @@
+/* DaytimeServer
+ */
 package main
 
 import (
 	"fmt"
-	"github.com/gorilla/websocket"
-	"net/http"
-
+	"net"
+	"os"
+	"time"
 )
 
-
 func main() {
-	http.HandleFunc("/ws", wsHandler)
-	http.HandleFunc("/", rootHandler)
 
-	panic(http.ListenAndServe(":8080", nil))
-}
+	service := ":1200"
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
+	checkError(err)
 
-func rootHandler(w http.ResponseWriter, r *http.Request) {
+	listener, err := net.ListenTCP("tcp", tcpAddr)
+	checkError(err)
 
-	/**
-	w setter automatisk status til 200 med mindre man spesifiserer på egenhånd
-	w benytter text/html som default
-	*/
-
-	fmt.Fprintf(w, "%s", "<html><body><h1>Hilsen. Du har koblet deg opp til min enkle web-tjener</h1><ul>")
-
-
-	for name, headers :=range r.Header {
-		var data = ""
-		for _, h := range headers{
-			data +=h
+	for {
+		conn, err := listener.Accept()
+		fmt.Print("kom seg hit")
+		if err != nil {
+			continue
+			fmt.Print(err)
+			fmt.Print("hva faen?")
 		}
-		fmt.Fprintf(w, "%s", "<li>" + name +" = " + data + "</li>")
 
+		daytime := time.Now().String()
+		conn.Write([]byte(daytime)) // don't care about return value
+		conn.Close()                // we're finished with this client
 	}
-	fmt.Fprintf(w, "%s", "</ul></body></html>")
-
 }
 
-func wsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Origin") != "http://"+r.Host {
-		http.Error(w, "Origin not allowed", 403)
-		return
-	}
-
-	conn, err := websocket.Upgrade(w, r, w.Header(), 1024, 1024)
+func checkError(err error) {
 	if err != nil {
-		http.Error(w, "Could not open websocket connection", http.StatusBadRequest)
+		fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())
+		os.Exit(1)
 	}
-	print(conn)
 }
-
