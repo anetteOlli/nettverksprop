@@ -44,7 +44,7 @@ func sendTall1(tall1 string) string{
 		fmt.Printf("Some error %v", err)
 		return "error"
 	}
-	_, err = conn.Write([]byte("tall1" + tall1))
+	_, err = conn.Write([]byte("tallEN" + tall1))
 	check(err)
 
 	//fmt.Fprintf(conn, []byte("tall1" + tall1))

@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c31a77a-c2bd-47e2-b9d9-f913167f73a9" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/Oving4/udpOperatoren.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Oving4/udptall1.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Oving4/udptall2.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Oving4/udpClient.go" beforeDir="false" afterPath="$PROJECT_DIR$/Oving4/udpClient.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Oving4/udpServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/Oving4/udpServer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Oving4/udptall1.go" beforeDir="false" afterPath="$PROJECT_DIR$/Oving4/udptall1.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Oving4/udptall2.go" beforeDir="false" afterPath="$PROJECT_DIR$/Oving4/udptall2.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Oving4/udpClient.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="862">
-              <caret line="56" column="38" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
+            <state relative-caret-position="529">
+              <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
               <folding>
                 <element signature="e#13#72#0" expanded="true" />
               </folding>
@@ -31,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Oving4/udptall1.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="207">
+              <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="46" selection-end-column="49" />
               <folding>
                 <element signature="e#13#72#0" expanded="true" />
               </folding>
@@ -43,8 +41,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Oving4/udptall2.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
-              <caret line="45" column="26" selection-start-line="45" selection-start-column="26" selection-end-line="45" selection-end-column="26" />
+            <state relative-caret-position="299">
+              <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
               <folding>
                 <element signature="e#13#72#0" expanded="true" />
               </folding>
@@ -55,20 +53,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Oving4/udpOperatoren.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="644">
-              <caret line="28" column="28" lean-forward="true" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
-              <folding>
-                <element signature="e#13#72#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="69">
+              <caret line="3" column="9" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Oving4/udpServer.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1150">
-              <caret line="65" column="38" selection-start-line="65" selection-start-column="38" selection-end-line="65" selection-end-column="38" />
+            <state relative-caret-position="-1415">
+              <caret line="14" column="17" lean-forward="true" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
               <folding>
                 <element signature="e#14#74#0" expanded="true" />
               </folding>
@@ -103,11 +98,11 @@
         <option value="$PROJECT_DIR$/Oving3/index.html" />
         <option value="$PROJECT_DIR$/Oving3/websocket.go" />
         <option value="$PROJECT_DIR$/Oving4/UdpSocket.go" />
-        <option value="$PROJECT_DIR$/Oving4/udptall1.go" />
-        <option value="$PROJECT_DIR$/Oving4/udptall2.go" />
         <option value="$PROJECT_DIR$/Oving4/udpOperatoren.go" />
         <option value="$PROJECT_DIR$/Oving4/udpServer.go" />
         <option value="$PROJECT_DIR$/Oving4/udpClient.go" />
+        <option value="$PROJECT_DIR$/Oving4/udptall1.go" />
+        <option value="$PROJECT_DIR$/Oving4/udptall2.go" />
       </list>
     </option>
   </component>
@@ -121,7 +116,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -129,25 +123,11 @@
               <item name="nettverksprog" type="b2602c69:ProjectViewProjectNode" />
               <item name="nettverksprog" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="nettverksprog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nettverksprog" type="462c0819:PsiDirectoryNode" />
-              <item name="Oving3" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nettverksprog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nettverksprog" type="462c0819:PsiDirectoryNode" />
-              <item name="Oving4" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nettverksprog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nettverksprog" type="462c0819:PsiDirectoryNode" />
-              <item name="wireshark" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
@@ -377,8 +357,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="27" width="1869" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28444937" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2888766" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -394,10 +375,10 @@
       <window_info anchor="bottom" id="Database Changes" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.4997233" weight="0.32977587" />
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.4991699" weight="0.38633937" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.4964029" side_tool="true" visible="true" weight="0.32017076" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.4969563" side_tool="true" visible="true" weight="0.32017076" />
       <window_info anchor="bottom" id="Sequence" order="10" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="12" sideWeight="0.50359714" visible="true" weight="0.32017076" />
+      <window_info anchor="bottom" id="Run" order="12" sideWeight="0.5030437" weight="0.32017076" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -485,10 +466,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Oving4/udptall2.go">
+    <entry file="file://$PROJECT_DIR$/Oving4/udpOperatoren.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
-          <caret line="45" column="26" selection-start-line="45" selection-start-column="26" selection-end-line="45" selection-end-column="26" />
+        <state relative-caret-position="69">
+          <caret line="3" column="9" lean-forward="true" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Oving4/udpClient.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="29" column="25" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
           <folding>
             <element signature="e#13#72#0" expanded="true" />
           </folding>
@@ -497,18 +485,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Oving4/udptall1.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="207">
+          <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="46" selection-end-column="49" />
           <folding>
             <element signature="e#13#72#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Oving4/udpOperatoren.go">
+    <entry file="file://$PROJECT_DIR$/Oving4/udptall2.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="28" column="28" lean-forward="true" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+        <state relative-caret-position="299">
+          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
           <folding>
             <element signature="e#13#72#0" expanded="true" />
           </folding>
@@ -517,20 +505,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Oving4/udpServer.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1150">
-          <caret line="65" column="38" selection-start-line="65" selection-start-column="38" selection-end-line="65" selection-end-column="38" />
+        <state relative-caret-position="-1415">
+          <caret line="14" column="17" lean-forward="true" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
           <folding>
             <element signature="e#14#74#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Oving4/udpClient.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="862">
-          <caret line="56" column="38" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-          <folding>
-            <element signature="e#13#72#0" expanded="true" />
           </folding>
         </state>
       </provider>
