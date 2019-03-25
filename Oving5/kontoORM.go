@@ -35,12 +35,13 @@ func main(){
 	}
 	fmt.Print("connection established")
 
+	//db.Debug().DropTableIfExists() vs db.DropTableIfExists() --> debug() skriver ut sql spørringa
 	db.Debug().DropTableIfExists(&konto{}) //drop tables if they exists
 	db.Debug().AutoMigrate(&konto{}) //auto creates tables based on struct konto
 
 	fortsette := true
 	for fortsette{
-		reader := bufio.NewReader(os.Stdin)
+		reader := bufio.NewReader(os.Stdin) //tilsvarer java scanner
 		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER, \n for å endre navn CHANGE,\nfor å avslutte skriv STOP")
 		valg,_:=reader.ReadString('\n')
 		switch valg {
@@ -70,7 +71,7 @@ func lagBruker(db *gorm.DB){
 	fmt.Print("skriv inn beløp på kontoen:")
 	moneyRead, _ := reader.ReadString('\n')
 	moneyReadTrim :=strings.Trim(moneyRead, "\n")
-	money, err := strconv.Atoi(moneyReadTrim)
+	money, err := strconv.Atoi(moneyReadTrim) //konverterer string til int
 	for err!=nil{
 		fmt.Print("skriv inn beløp på kontoen, beløpet må være et heltall")
 		moneyRead, _ = reader.ReadString('\n')
@@ -78,8 +79,8 @@ func lagBruker(db *gorm.DB){
 		money, err = strconv.Atoi(moneyReadTrim)
 	}
 	fmt.Print("kommet så langt, lest verdiene: " + strconv.Itoa(money) + "  " + navn)
-	person :=&konto{Kunde:navn, Penger:money}
-	db.Debug().Create(person) //db.Create() vs db.Debug().Create() , debug skriver ut sql setninga ut til konsoll
+	person :=&konto{Kunde:navn, Penger:money} //lager et person objekt av konto type
+	db.Debug().Create(person) //opretter person i databasen
 	return
 
 }
@@ -90,9 +91,16 @@ func slettBruker(db *gorm.DB){
 	navn :=strings.Trim(navnRead, "\n")
 
 	person :=&konto{}
+	//First() vs Find(): First() finner kjører med LIMIT 1
 	db.Debug().First(&person, "Kunde=?", navn) //ikke spesielt funksjonelt men dette tar altså å legger inn sql resultatet inn i person
 	fmt.Print(person.Kontonummer, person.Penger, person.Kunde)
-	db.Debug().Delete(&person)
+
+	if person.Kontonummer !=0 {
+		//NB! hvis raden vi skal slette mangler primary key, så slettes alt i tabellen
+		db.Debug().Delete(&person)
+	}else{
+		fmt.Print("personen finnes ikke")
+	}
 
 
 }
@@ -102,7 +110,7 @@ func oppdaterNavn(db *gorm.DB){
 	navnRead, _ := reader.ReadString('\n')
 	navn := strings.Trim(navnRead, "\n") //hive bort linjeskiftet fra navnet, og ja; dette er ugly
 
-	person :=&konto{}
+	 var person konto
 	db.Debug().First(&person, "Kunde=?", navn)
 	fmt.Print(person.Kunde, person.Kontonummer, person.Penger)
 	fmt.Print("skriv inn nytt navn:")
@@ -144,6 +152,7 @@ func transferMOney(db *gorm.DB){
 	donorPerson.Penger = donorPerson.Penger - penger
 	motakerPerson.Penger = motakerPerson.Penger + penger
 
+	
 	//så bare lagre dette i databasen og så er vi good
 	db.Debug().Save(&donorPerson)
 	db.Debug().Save(&motakerPerson)
