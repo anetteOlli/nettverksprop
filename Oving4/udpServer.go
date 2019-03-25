@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-"net"
+	"net"
 	"os"
 	"strconv"
 	"strings"
