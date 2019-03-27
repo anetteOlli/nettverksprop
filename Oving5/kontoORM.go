@@ -22,6 +22,7 @@ type konto struct {
 	Kontonummer int `gorm:"primary_key";"AUTO_INCREMENT"`
 	Kunde string `gorm:"type:varchar(150)"`
 	Penger int
+	//Optlaas int 'gorm:"type:integer"'
 }
 
 
@@ -35,8 +36,8 @@ func main(){
 	}
 	fmt.Print("connection established")
 
-	db.Debug().DropTableIfExists(&konto{}) //drop tables if they exists
-	db.Debug().AutoMigrate(&konto{}) //auto creates tables based on struct konto
+	//db.Debug().DropTableIfExists(&konto{}) //drop tables if they exists
+	//db.Debug().AutoMigrate(&konto{}) //auto creates tables based on struct konto
 
 	fortsette := true
 	for fortsette{
