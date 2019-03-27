@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c31a77a-c2bd-47e2-b9d9-f913167f73a9" name="Default" comment="">
-<<<<<<< HEAD
-=======
       <change beforePath="" afterPath="$PROJECT_DIR$/Oving5/kontoORM_test.go" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
->>>>>>> f5b6bdd67092fb6c73d647982614b1e6a551da16
-      <change beforePath="$PROJECT_DIR$/Oving5/kontoORM.go" afterPath="$PROJECT_DIR$/Oving5/kontoORM.go" />
+
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
