@@ -4,19 +4,29 @@ import "testing"
 
 func TestKontoORM(t *testing.T){
 	cases := []struct {
-		in int; string; int
-		want bool
-	}{
-		{1034968543, Jan, 700, false},
-		{7492039553, Gaudus, 30, true},
-		{1493920394, Kari, 1000,true},
-	}
-	for _, c := range cases {
-		lagBruker(c.in)
-		got := getKonto(c.in)
+		kontonummer int; Kunde string; penger int
 
-		if got != c.want {
-			t.Errorf("select(%b, %s, %b) == %t, want %t", c.in, got, c.want)
+	}{
+		{1, "Jan", 700},
+		{2, "Gaudus", 30},
+		{3, "Kari", 1000},
+	}
+
+	var db, err = OpprettForbindelse()
+	if err !=nil{
+		t.Errorf("connecting issues")
+	}
+	defer db.Close()
+	WipeDatabase(db) //vil ha tom og frisk database
+
+
+	for _, c := range cases {
+		LagBruker(db, c.Kunde, c.penger)
+
+		got := GetKonto(db, c.Kunde)
+
+		if got.Kunde != c.Kunde && got.Kontonummer != c.kontonummer && got.Penger != c.penger {
+			t.Errorf("select(%b, %s, %b) == %t, want %t", c.Kunde, got, c.Kunde)
 		}
 	}
 }
