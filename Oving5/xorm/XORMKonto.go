@@ -1,4 +1,4 @@
-package main
+package xorm
 
 import (
 	"fmt"
@@ -12,6 +12,7 @@ type Account struct {
 	Customer string `xorm:"varchar(150)"`
 	Money int64
 }
+
 
 func main(){
 	engine, err := CreateConnection()
