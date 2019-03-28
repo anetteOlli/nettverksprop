@@ -153,6 +153,7 @@ func OppdaterNavn(db *gorm.DB, oldName string, newName string){
 func TransferMOney(db *gorm.DB, donor string, mottaker string, penger int){
 
 	donorPerson :=&konto{}
+
 	db.Debug().First(&donorPerson, "Kunde=?", donor)
 	//her burde man sikkert ha hatt en sjekk på at kunden faktisk finnes, MEEEEN det driter jeg i
 
@@ -167,6 +168,7 @@ func TransferMOney(db *gorm.DB, donor string, mottaker string, penger int){
 	//så bare lagre dette i databasen og så er vi good
 	db.Debug().Save(&donorPerson)
 	db.Debug().Save(&mottakerPerson)
+
 
 }
 
@@ -194,4 +196,5 @@ func GetRikeKontoer(db *gorm.DB,  penger int)[]konto{
 }
 func WipeDatabase(db *gorm.DB){
 	db.Debug().DropTableIfExists(&konto{})
+	db.Debug().AutoMigrate(&konto{})
 }

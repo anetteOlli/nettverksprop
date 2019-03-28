@@ -26,7 +26,7 @@ func TestKontoORM(t *testing.T){
 		got := GetKonto(db, c.Kunde)
 
 		if got.Kunde != c.Kunde && got.Kontonummer != c.kontonummer && got.Penger != c.penger {
-			t.Errorf("select(%b, %s, %b) == %t, want %t", c.Kunde, got, c.Kunde)
+			t.Errorf("incorrect customer, got: %s, want: %s", got.Kunde, c.Kunde)
 		}
 	}
 }
