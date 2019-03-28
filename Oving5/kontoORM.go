@@ -109,6 +109,13 @@ func main(){
 			}
 			rikeKontoer = GetRikeKontoer(db, penger)
 			fmt.Print(rikeKontoer)
+			rikPerson := rikeKontoer[0]
+			fmt.Print("skriv nytt navn på rikingen, gammelt navn var: ", rikPerson.Kunde)
+			nyttnavn,_ :=reader.ReadString('\n')
+			nyttnavn = strings.Trim(nyttnavn,"\n")
+			rikPerson.Kunde = nyttnavn
+			db.Save(rikPerson)
+
 		case "SAFETRANS\n":
 			fmt.Print("hvem skal overføre penger?")
 			donorRead,_:=reader.ReadString('\n')
@@ -211,7 +218,7 @@ func TransferSafe(db *gorm.DB, donor string, mottaker string, penger float64){
 	tx :=db.Begin()
 	err1 := tx.Debug().Model(&donorPerson).Where("versjon = ?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon})
 	err2 := tx.Debug().Model(&mottakerPerson).Where("versjon = ?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon})
-	if err1!=nil && err2!=nil{
+	if err1!=nil ||err2!=nil{
 		tx.Rollback()
 		fmt.Println("transaction error due to version error")
 	}else{
