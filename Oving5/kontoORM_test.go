@@ -6,12 +6,12 @@ import (
 
 func TestKontoORM(t *testing.T){
 	cases := []struct {
-		kontonummer int; Kunde string; penger int
+		kontonummer int; Kunde string; penger float64
 
 	}{
-		{1, "Jan", 700},
-		{2, "Gaudus", 30},
-		{3, "Kari", 1000},
+		{1, "Jan", 700.00},
+		{2, "Gaudus", 30.00},
+		{3, "Kari", 1000.00},
 	}
 
 	var db, err = OpprettForbindelse()
