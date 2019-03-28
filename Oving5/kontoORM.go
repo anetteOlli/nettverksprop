@@ -21,7 +21,7 @@ type konto struct {
 	//gorm.Model
 	Kontonummer int `gorm:"primary_key";"AUTO_INCREMENT"`
 	Kunde string `gorm:"type:varchar(150)"`
-	Penger int
+	Penger float64
 	Versjon int
 }
 
@@ -51,12 +51,12 @@ func main(){
 			fmt.Print("skriv inn beløp på kontoen:")
 			moneyRead, _ := reader.ReadString('\n')
 			moneyReadTrim :=strings.Trim(moneyRead, "\n")
-			money, err := strconv.Atoi(moneyReadTrim) //konverterer string til int
+			money, err := strconv.ParseFloat(moneyReadTrim, 'f') //konverterer string til int
 			for err!=nil{
 				fmt.Print("skriv inn beløp på kontoen, beløpet må være et heltall")
 				moneyRead, _ = reader.ReadString('\n')
 				moneyReadTrim = strings.Trim(moneyRead, "\n")
-				money, err = strconv.Atoi(moneyReadTrim)
+				money, err = strconv.ParseFloat(moneyReadTrim, 'f')
 			}
 			LagBruker(db, navn, money)
 		case "DELETE\n":
@@ -82,12 +82,12 @@ func main(){
 			fmt.Print("hvor mye penger skal overføres?")
 			pengerRead,_:=reader.ReadString('\n')
 			pengerRead = strings.Trim(pengerRead, "\n")
-			penger, err := strconv.Atoi(pengerRead)
+			penger, err := strconv.ParseFloat(pengerRead, 'f')
 			for err!=nil{
 				fmt.Print("du må skrive inn et heltall")
 				pengerRead,_ = reader.ReadString('\n')
 				pengerRead = strings.Trim(pengerRead, "\n")
-				penger, err = strconv.Atoi(pengerRead)
+				penger, err = strconv.ParseFloat(pengerRead, 'f')
 			}
 			TransferMOney(db, donor, motaker, penger)
 		case "GETONE\n":
@@ -95,17 +95,17 @@ func main(){
 			navnRead,_ := reader.ReadString('\n')
 			navn := strings.Trim(navnRead, "\n")
 			bruker := GetKonto(db, navn)
-			fmt.Print(bruker.Kontonummer, bruker.Kunde, strconv.Itoa(bruker.Penger) + "\n")
+			fmt.Print(bruker.Kontonummer, bruker.Kunde, strconv.FormatFloat(bruker.Penger, 'f',2,64) + "\n")
 		case "RIKE\n":
 			fmt.Print("hvor rik?, skriv inn minste beløp")
 			pengerRead, _ := reader.ReadString('\n')
 			pengerRead = strings.Trim(pengerRead, "\n")
-			penger, err := strconv.Atoi(pengerRead)
+			penger, err := strconv.ParseFloat(pengerRead, 'f')
 			for err!=nil{
 				fmt.Print("du må skrive inn et heltall")
 				pengerRead, _ = reader.ReadString('\n')
 				pengerRead = strings.Trim(pengerRead, "\n")
-				penger, err = strconv.Atoi(pengerRead)
+				penger, err = strconv.ParseFloat(pengerRead, 'f')
 			}
 			rikeKontoer = GetRikeKontoer(db, penger)
 			fmt.Print(rikeKontoer)
@@ -119,12 +119,12 @@ func main(){
 			fmt.Print("hvor mye penger skal overføres?")
 			pengerRead,_:=reader.ReadString('\n')
 			pengerRead = strings.Trim(pengerRead, "\n")
-			penger, err := strconv.Atoi(pengerRead)
+			penger, err := strconv.ParseFloat(pengerRead, 'f')
 			for err!=nil{
 				fmt.Print("du må skrive inn et heltall")
 				pengerRead,_ = reader.ReadString('\n')
 				pengerRead = strings.Trim(pengerRead, "\n")
-				penger, err = strconv.Atoi(pengerRead)
+				penger, err = strconv.ParseFloat(pengerRead, 'f')
 			}
 			TransferSafe(db, donor, motaker, penger)
 		case "RESET\n":
@@ -140,9 +140,9 @@ func main(){
 
 }
 
-func LagBruker(db *gorm.DB, navn string, penger int){
+func LagBruker(db *gorm.DB, navn string, penger float64){
 
-	fmt.Print("kommet så langt, lest verdiene: " + strconv.Itoa(penger) + "  " + navn)
+	fmt.Print("kommet så langt, lest verdiene: " + strconv.FormatFloat(penger, 'f', 6,64)+ "  " + navn)
 	person :=&konto{Kunde:navn, Penger:penger} //lager et person objekt av konto type
 	db.Debug().Create(person) //opretter person i databasen
 	return
@@ -170,7 +170,7 @@ func OppdaterNavn(db *gorm.DB, oldName string, newName string){
 	db.Debug().Save(&person)
 }
 
-func TransferMOney(db *gorm.DB, donor string, mottaker string, penger int){
+func TransferMOney(db *gorm.DB, donor string, mottaker string, penger float64){
 
 	donorPerson :=&konto{}
 
@@ -192,7 +192,7 @@ func TransferMOney(db *gorm.DB, donor string, mottaker string, penger int){
 
 }
 
-func TransferSafe(db *gorm.DB, donor string, mottaker string, penger int){
+func TransferSafe(db *gorm.DB, donor string, mottaker string, penger float64){
 	donorPerson :=&konto{}
 	db.Debug().First(&donorPerson, "Kunde=?", donor)
 	//her burde man sikkert ha hatt en sjekk på at kunden faktisk finnes, MEEEEN det driter jeg i
@@ -238,7 +238,7 @@ func GetKonto(db *gorm.DB, navn string)konto{
 	db.Debug().First(&konto, "Kunde=?", navn)
 	return konto
 }
-func GetRikeKontoer(db *gorm.DB,  penger int)[]konto{
+func GetRikeKontoer(db *gorm.DB,  penger float64)[]konto{
 	var kontoer []konto
 	db.Debug().Find(&kontoer, "Penger>=?", penger)
 	return kontoer
