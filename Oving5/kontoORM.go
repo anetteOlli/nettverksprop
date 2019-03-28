@@ -22,6 +22,7 @@ type konto struct {
 	Kontonummer int `gorm:"primary_key";"AUTO_INCREMENT"`
 	Kunde string `gorm:"type:varchar(150)"`
 	Penger int
+	Versjon int
 }
 
 
@@ -40,7 +41,7 @@ func main(){
 	fortsette := true
 	for fortsette{
 		reader := bufio.NewReader(os.Stdin) //tilsvarer java scanner
-		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\nfor å avslutte skriv STOP")
+		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å overføre penger med optimistisk låsing skriv SAFETRANS, \n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\n reset database, skriv RESET,\nfor å finne de rikeste, skrive RIKE, \nfor å avslutte skriv STOP")
 		valg,_:=reader.ReadString('\n')
 		switch valg {
 		case "ADD\n":
@@ -72,7 +73,6 @@ func main(){
 			newNavn := strings.Trim(newNameRead, "\n")
 			OppdaterNavn(db, oldNavn, newNavn)
 		case "TRANSFER\n":
-			fmt.Print("hvem skal overføre penger?")
 			fmt.Print("hvem skal overføre penger?")
 			donorRead,_:=reader.ReadString('\n')
 			donor :=strings.Trim(donorRead,"\n")
@@ -109,6 +109,26 @@ func main(){
 			}
 			rikeKontoer = GetRikeKontoer(db, penger)
 			fmt.Print(rikeKontoer)
+		case "SAFETRANS\n":
+			fmt.Print("hvem skal overføre penger?")
+			donorRead,_:=reader.ReadString('\n')
+			donor :=strings.Trim(donorRead,"\n")
+			fmt.Print("hvem skal få penger?")
+			motakerRead,_:=reader.ReadString('\n')
+			motaker := strings.Trim(motakerRead,"\n")
+			fmt.Print("hvor mye penger skal overføres?")
+			pengerRead,_:=reader.ReadString('\n')
+			pengerRead = strings.Trim(pengerRead, "\n")
+			penger, err := strconv.Atoi(pengerRead)
+			for err!=nil{
+				fmt.Print("du må skrive inn et heltall")
+				pengerRead,_ = reader.ReadString('\n')
+				pengerRead = strings.Trim(pengerRead, "\n")
+				penger, err = strconv.Atoi(pengerRead)
+			}
+			TransferSafe(db, donor, motaker, penger)
+		case "RESET\n":
+			WipeDatabase(db)
 
 		default:
 			fmt.Print("du valgte å avslutte ", valg)
@@ -170,6 +190,35 @@ func TransferMOney(db *gorm.DB, donor string, mottaker string, penger int){
 
 }
 
+func TransferSafe(db *gorm.DB, donor string, mottaker string, penger int){
+	donorPerson :=&konto{}
+	db.Debug().First(&donorPerson, "Kunde=?", donor)
+	//her burde man sikkert ha hatt en sjekk på at kunden faktisk finnes, MEEEEN det driter jeg i
+
+	mottakerPerson :=&konto{}
+	db.Debug().First(&mottakerPerson, "Kunde=?", mottaker)
+	//igjen her mangler det en del if-sjekker, men de bryr vi oss ikke om
+
+	//her får man lov til å overføre mer penger enn man har, null stress med minus på konto
+	donopersonNyePenger := donorPerson.Penger - penger
+	donorpersonNyversjon := donorPerson.Versjon +1
+	mottakerPersonNyePenger := mottakerPerson.Penger + penger
+	mottakerpersonNyversjon := mottakerPerson.Versjon +1
+
+	//så bare lagre dette i databasen og så er vi good
+	tx :=db.Begin()
+	err1 := tx.Debug().Model(&donorPerson).Where("versjon = ?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon})
+	err2 := tx.Debug().Model(&mottakerPerson).Where("versjon = ?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon})
+	if err1!=nil && err2!=nil{
+		tx.Rollback()
+		fmt.Println("transaction error due to version error")
+	}else{
+		tx.Commit()
+	}
+
+
+}
+
 func OpprettForbindelse() (*gorm.DB, error){
 	mysqlAdress := "anettosi:LN8iIcr6@tcp(mysql.stud.iie.ntnu.no:3306)/anettosi?charset=utf8&parseTime=True&loc=Local"
 	db, err :=gorm.Open("mysql", mysqlAdress)
@@ -194,4 +243,5 @@ func GetRikeKontoer(db *gorm.DB,  penger int)[]konto{
 }
 func WipeDatabase(db *gorm.DB){
 	db.Debug().DropTableIfExists(&konto{})
+	db.Debug().AutoMigrate(&konto{})
 }

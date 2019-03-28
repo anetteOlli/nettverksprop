@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"database/sql"
+)
 
 func TestKontoORM(t *testing.T){
 	cases := []struct {
@@ -19,4 +22,8 @@ func TestKontoORM(t *testing.T){
 			t.Errorf("select(%b, %s, %b) == %t, want %t", c.in, got, c.want)
 		}
 	}
+}
+
+func setUpMyDB(t *testing.T)(db *sql.DB, cleanup func() error){
+
 }
