@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestKontoORM(t *testing.T){
 	cases := []struct {
@@ -29,4 +31,6 @@ func TestKontoORM(t *testing.T){
 			t.Errorf("incorrect customer, got: %s, want: %s", got.Kunde, c.Kunde)
 		}
 	}
+
 }
+
