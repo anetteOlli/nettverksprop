@@ -41,7 +41,7 @@ func main(){
 	fortsette := true
 	for fortsette{
 		reader := bufio.NewReader(os.Stdin) //tilsvarer java scanner
-		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å overføre penger med optimistisk låsing skriv SAFETRANS, \n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\n reset database, skriv RESET,\nfor å finne de rikeste, skrive RIKE, \nfor å avslutte skriv STOP")
+		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å overføre penger med optimistisk låsing skriv SAFETRANS, \n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\n reset database, skriv RESET,\nfor å finne de rikeste, skrive RIKE, \nfor å avslutte skriv STOP\n")
 		valg,_:=reader.ReadString('\n')
 		switch valg {
 		case "ADD\n":
@@ -209,9 +209,9 @@ func TransferSafe(db *gorm.DB, donor string, mottaker string, penger float64){
 
 	//så bare lagre dette i databasen og så er vi good
 	tx :=db.Begin()
-	err1 := tx.Debug().Model(&donorPerson).Where("versjon = ?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon})
-	err2 := tx.Debug().Model(&mottakerPerson).Where("versjon = ?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon})
-	if err1!=nil && err2!=nil{
+	row1 := tx.Debug().Model(&donorPerson).Where("versjon = ?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon}).RowsAffected
+	row2 := tx.Debug().Model(&mottakerPerson).Where("versjon = ?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon}).RowsAffected
+	if row1==0 || row2==0{
 		tx.Rollback()
 		fmt.Println("transaction error due to version error")
 	}else{
