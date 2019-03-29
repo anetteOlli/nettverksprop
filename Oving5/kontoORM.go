@@ -109,6 +109,13 @@ func main(){
 			}
 			rikeKontoer = GetRikeKontoer(db, penger)
 			fmt.Print(rikeKontoer)
+			rikPerson := rikeKontoer[0]
+			fmt.Print("skriv nytt navn på rikingen, gammelt navn var: ", rikPerson.Kunde)
+			nyttnavn,_ :=reader.ReadString('\n')
+			nyttnavn = strings.Trim(nyttnavn,"\n")
+			rikPerson.Kunde = nyttnavn
+			db.Save(rikPerson)
+
 		case "SAFETRANS\n":
 			fmt.Print("hvem skal overføre penger?")
 			donorRead,_:=reader.ReadString('\n')
