@@ -43,6 +43,7 @@ func main(){
 		reader := bufio.NewReader(os.Stdin) //tilsvarer java scanner
 		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å overføre penger med optimistisk låsing skriv SAFETRANS, \n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\n reset database, skriv RESET,\nfor å finne de rikeste, skrive RIKE, \nfor å avslutte skriv STOP\n")
 		valg,_:=reader.ReadString('\n')
+		valg = strings.Trim(valg, "\n")
 		switch valg {
 		case "ADD\n":
 			fmt.Print("skriv inn navnet på eier av konto")
@@ -116,7 +117,7 @@ func main(){
 			rikPerson.Kunde = nyttnavn
 			db.Save(rikPerson)
 
-		case "SAFETRANS\n":
+		case "SAFETRANS":
 			fmt.Print("hvem skal overføre penger?")
 			donorRead,_:=reader.ReadString('\n')
 			donor :=strings.Trim(donorRead,"\n")
@@ -138,7 +139,8 @@ func main(){
 			WipeDatabase(db)
 
 		default:
-			fmt.Print("du valgte å avslutte ", valg)
+			utskrift := fmt.Sprintf("dA fuck_! du valgte å avslutte ddd %sddd", valg)
+			fmt.Print(utskrift)
 			fortsette = false
 		}
 	}
@@ -216,14 +218,28 @@ func TransferSafe(db *gorm.DB, donor string, mottaker string, penger float64){
 
 	//så bare lagre dette i databasen og så er vi good
 	tx :=db.Begin()
-	row1 := tx.Debug().Model(&donorPerson).Where("versjon = ?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon}).RowsAffected
-	row2 := tx.Debug().Model(&mottakerPerson).Where("versjon = ?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon}).RowsAffected
-	if row1==0 || row2==0{
-		tx.Rollback()
-		fmt.Println("transaction error due to version error")
+	//fmt.Print("skriver ut pengene til donorpersonen: ", donopersonNyePenger , "\n")
+	row1 := tx.Debug().Model(&donorPerson).Where("versjon =?", donorPerson.Versjon).Updates(konto{Penger:donopersonNyePenger, Versjon:donorpersonNyversjon}).RowsAffected
+	if row1 !=0{
+		row2 := tx.Debug().Model(&mottakerPerson).Where("versjon =?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon}).RowsAffected
+		if row2 !=0{
+			tx.Commit()
+		}else{
+			fmt.Print(tx.Rollback().Debug())
+			fmt.Print("something went wrong, rolling back")
+		}
 	}else{
-		tx.Commit()
+		fmt.Print(tx.Rollback().Error)
+		fmt.Print("something went wrong, rolling back")
 	}
+	//row2 := tx.Debug().Model(&mottakerPerson).Where("versjon =?", mottakerPerson.Versjon).Updates(konto{Penger:mottakerPersonNyePenger, Versjon:mottakerpersonNyversjon}).RowsAffected
+	//if row1==0 || row2==0{
+	//	fmt.Print(tx.Rollback().RowsAffected, "\n")
+	//	fmt.Println("transaction error due to version error")
+	//	return
+	//}else{
+	//	tx.Commit()
+	//}
 
 
 }
