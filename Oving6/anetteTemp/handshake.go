@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -28,6 +27,8 @@ func main() {
 			continue
 		}
 		handleClient(conn)
+
+
 		conn.Close()// we're finished with this client
 	}
 }
@@ -64,11 +65,20 @@ func handleClient(conn net.Conn){
 	h.Write([]byte(secWebSocketAcceptString))
 
 	var secWebSocketAccept = base64.StdEncoding.EncodeToString(h.Sum(nil))
-	var header  = "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: " + secWebSocketAccept +"\r\nContent-length: " + strconv.Itoa(len(body)) + "\r\n\r\n"
+	var header  = "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: " + secWebSocketAccept +"\r\n\r\n"
 	fmt.Println(header, body)
-	var total = header + body
+	//var total = header + body
 
-	conn.Write([]byte(total)) // don't care about return value
+	conn.Write([]byte(header)) // don't care about return value
+
+	beskjed := []byte{0x81, 0x83, 0xb4, 0xb5, 0x03, 0x2a, 0xdc, 0xd0, 0x6}
+
+
+
+
+	conn.Write(beskjed)
+
+
 }
 
 func checkError(err error) {
