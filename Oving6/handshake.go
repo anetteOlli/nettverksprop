@@ -1,6 +1,6 @@
 /* DaytimeServer
  */
-package main
+package Oving6
 
 import (
 	"crypto/sha1"
