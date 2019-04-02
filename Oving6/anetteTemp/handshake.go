@@ -44,30 +44,27 @@ func handleClient(conn net.Conn){
 	fmt.Println(buf)
 	var bufRead = string(buf[0:])
 	fmt.Println("bufferRead",bufRead)
-	var secWebSocketKey ="blahblah placeholder"
+	var secWebSocketKey string
 	temp := strings.Split(bufRead,"\n")
 
-	var bodyMid= ""
+
 	for _, element := range temp {
 		var el = strings.TrimSpace(element)
-		if len(el) !=0 && el != "  " {
-			bodyMid += "<li>" + el + "</li>"
-		}
+
 		if strings.Contains(el, "Sec-WebSocket-Key:"){
 			fmt.Print("\nforhåpentligvis Sec-WebSocket-Key:" +el+"\n\n")
 			secWebSocketKey = strings.Trim(el, "Sec-WebSocket-Key: ")
 		}
 	}
 
-	//var body = bodyStart + bodyMid + bodyEnd
-	var secWebSocketAcceptString = secWebSocketKey +"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-	var h = sha1.New()
-	h.Write([]byte(secWebSocketAcceptString))
 
-	var secWebSocketAccept = base64.StdEncoding.EncodeToString(h.Sum(nil))
+	var secWebSocketAcceptString = secWebSocketKey +"258EAFA5-E914-47DA-95CA-C5AB0DC85B11" //concater sec-WebSocket-Key med den nøkkel-greia fra RFc-6455
+	var h = sha1.New()  //sha1 krypterer den slik den forlanger at det skal gjøres
+	h.Write([]byte(secWebSocketAcceptString)) //skriver den ut som en streng
+
+	var secWebSocketAccept = base64.StdEncoding.EncodeToString(h.Sum(nil)) //enkoder den til base64 som RFC forlanger
 	var header  = "HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: " + secWebSocketAccept +"\r\n\r\n"
-	//fmt.Println(header, body)
-	//var total = header + body
+
 
 	conn.Write([]byte(header)) // don't care about return value
 
@@ -84,6 +81,9 @@ func checkError(err error) {
 }
 func sendMessage(conn net.Conn){
 	startBeskjed := []byte{0x81} //bitmønseter som MÅ sendes over i starten er 1000 0001 -> tilsvarer hex 81.
+	//bitmønsteret er valgt: første bit: 1 betyr FIN, dette er siste del av melding.
+	//etterfulgt av 3 0'er --> obligatoriske nuller
+	//4 neste bits: op-kode til klient: velger op-kode 0001 = tekst
 
 	beskjed := []byte("hei") //beskjeden vi ønsker å sende over på byteformat
 	beskjedLengde := len(beskjed) //vi skal ikke maskere beskjeden, og vi er rimelig sikker på at beskjeden er under 127 bytes. dermed blir de syv bitene bare lengden på beskjeden
