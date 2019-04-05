@@ -1,6 +1,6 @@
 /* DaytimeServer
  */
-package Oving6
+package main
 
 import (
 	"crypto/sha1"
@@ -89,6 +89,7 @@ func sendMessage(conn net.Conn){
 	beskjedLengde := len(beskjed) //vi skal ikke maskere beskjeden, og vi er rimelig sikker på at beskjeden er under 127 bytes. dermed blir de syv bitene bare lengden på beskjeden
 
 	beskjedIByte := byte(beskjedLengde)
+
 
 	beskjedSendes := append(append(startBeskjed, beskjedIByte), beskjed... ) //setter sammen framen
 	fmt.Print("utskrift av beskjed som sendes over: start av beskjed: ", startBeskjed[0:], "lengde på beskjed: ", beskjedLengde, ", selve beskjeden: ", beskjed[0:], "\n")
