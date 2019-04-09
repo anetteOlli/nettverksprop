@@ -1,0 +1,9 @@
+{
+  "name": "nettverksprog",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.16.4",
+    "js-sha1": "^0.6.0",
+    "sha1": "1.1.1"
+  }
+}

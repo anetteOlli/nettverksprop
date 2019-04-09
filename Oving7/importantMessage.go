@@ -44,6 +44,25 @@ func main()  {
 	fmt.Println("Exponent : ", pk.E)
 	fmt.Println("Modulus : ", pk.N)
 
+	//tall := []uint64{}
+	//tall = append(binary.BigEndian.Uint64(signature_as_byte))
+
+
+	//var dekodetHash []byte
+	////for i:=0;i<len(signature_as_byte); i++{
+	//for _,element := range signature_as_byte {
+	//
+	//
+	//}
+
+	//var dekodetHash []byte
+
+
+	//for i:=0;i<len(signature_as_byte);i++{
+	//	dekodetHash = signature_as_uint64
+	//}
+
+	//fmt.Println(tall)
 
 	//trinnn 1: hent hashen ut av signaturen
 
