@@ -43,7 +43,7 @@ func main(){
 		reader := bufio.NewReader(os.Stdin) //tilsvarer java scanner
 		fmt.Print("for å legge inn person i db skriv ADD, \n for å slette skriv DELETE, \n for å overføre penger skriv TRANSFER,\n for å overføre penger med optimistisk låsing skriv SAFETRANS, \n for å hente ut en bruker, skriv GETONE,\n for å endre navn CHANGE,\n reset database, skriv RESET,\nfor å finne de rikeste, skrive RIKE, \nfor å avslutte skriv STOP\n")
 		valg,_:=reader.ReadString('\n')
-		valg = strings.Trim(valg, "\n")
+		//valg = strings.Trim(valg, "\n")
 		switch valg {
 		case "ADD\n":
 			fmt.Print("skriv inn navnet på eier av konto")
